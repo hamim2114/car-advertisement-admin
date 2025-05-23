@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { Box, Card, CardContent, Typography, Grid, Stack, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
 const Dashboard = () => {
   const [startDate, setStartDate] = useState(null)
@@ -31,22 +29,20 @@ const Dashboard = () => {
           <Grid container spacing={3} alignItems="center">
             <Grid item xs={12} md={8}>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <TextField
-                    type='date'
-                    helperText="Select the start date"
-                    value={startDate}
-                    onChange={(newValue) => setStartDate(newValue)}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                  <TextField
-                    type='date'
-                    helperText="Select the end date"
-                    value={endDate}
-                    onChange={(newValue) => setEndDate(newValue)}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </LocalizationProvider>
+                <TextField
+                  type='date'
+                  helperText="Select the start date"
+                  value={startDate}
+                  onChange={(newValue) => setStartDate(newValue)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                <TextField
+                  type='date'
+                  helperText="Select the end date"
+                  value={endDate}
+                  onChange={(newValue) => setEndDate(newValue)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
               </Stack>
             </Grid>
             <Grid item xs={12} md={4}>
@@ -62,7 +58,7 @@ const Dashboard = () => {
             <Typography variant="h6" sx={{ mb: 2 }}>
               {stat.link}
             </Typography>
-            
+
             <Grid container spacing={2} sx={{ mb: 3 }}>
               <Grid item xs={12} sm={6} md={3}>
                 <Card variant="outlined">
