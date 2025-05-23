@@ -4,13 +4,12 @@ import { useEffect } from 'react'
 import Layout from './pages/Layout'
 import Login from './pages/login/Login'
 import Dashboard from './pages/dashboard/Dashboard'
-import Course from './pages/courses/course/Course'
 import Setting from './pages/settings/Setting'
 import { Box } from '@mui/material'
 import useAuth from './hook/useAuth'
 import ForgotePass from './pages/forgotePass/ForgotePass'
 import PasswordReset from './pages/password-reset/PasswordReset'
-import CourseDetails from './pages/courses/course/CourseDetails'
+import CreateLink from './pages/createLink/CreateLink'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -23,8 +22,7 @@ const ScrollToTop = () => {
 
 function App() {
 
-  const token  = "7fv"
-  // const { token } = useAuth()
+  const { token } = useAuth()
 
   return (
     <Box
@@ -38,8 +36,7 @@ function App() {
         <Route path='password-reset/:token' element={<PasswordReset />} />
         <Route path='/dashboard' element={token ? <Layout /> : <Login />}>
           <Route path='' element={<Dashboard />} />
-          <Route path='course' element={<Course />} />
-          <Route path='course/:id' element={<CourseDetails />} />
+          <Route path='create-link' element={<CreateLink />} />
           <Route path='setting' element={<Setting />} />
           <Route path='*' element={<NotFound />} />
         </Route>

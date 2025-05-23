@@ -50,7 +50,7 @@ CustomTabPanel.propTypes = {
 };
 
 const tabName = [
-  'Info',
+  // 'Info',
   'Profile',
   'Account'
 ]
@@ -90,9 +90,8 @@ const Setting = () => {
       </Stack>
 
       <Box maxWidth='lg' sx={{ p: { xs: 1, lg: 3 } }}>
-        <CustomTabPanel value={tabIndex} index={0}><Info /></CustomTabPanel>
-        <CustomTabPanel value={tabIndex} index={1}><Profile /></CustomTabPanel>
-        <CustomTabPanel value={tabIndex} index={2}><Account /></CustomTabPanel>
+        <CustomTabPanel value={tabIndex} index={0}><Profile /></CustomTabPanel>
+        <CustomTabPanel value={tabIndex} index={1}><Account /></CustomTabPanel>
       </Box>
 
     </Box>

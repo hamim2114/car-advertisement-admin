@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Container, IconButton, Input, InputAdornment, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Container, IconButton, Input, InputAdornment, Stack, TextField, Typography, Paper } from '@mui/material'
 import { useState } from 'react'
 import { KeyboardArrowLeft, Visibility, VisibilityOff } from '@mui/icons-material';
 import toast from 'react-hot-toast';
@@ -12,7 +12,6 @@ const Login = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const [forgotePassSecOpen, setForgotePassSecOpen] = useState(false);
   const [forgotEmail, setForgotEmail] = useState({ email: '' });
-
 
   const { setToken } = useAuth()
   const queryClient = useQueryClient();
@@ -48,99 +47,101 @@ const Login = () => {
     }
   }
 
-
-
   const passResetData = ''
 
   const passwordVisibilityHandler = () => setPasswordVisibility(!passwordVisibility);
 
-
   return (
-    <Container sx={{
-      width: '100%',
-      height: '100vh',
+    <Container maxWidth={false} sx={{
+      minHeight: '100vh',
       display: 'flex',
-      flexDirection: { xs: 'column', lg: 'row' },
       alignItems: 'center',
       justifyContent: 'center',
-      gap: 5,
-      py: { xs: 5, lg: 0 },
-      background: 'linear-gradient(90deg, #EDF3FF 0%, #FFE8D7 100%, #F0FFDF 100%)',
-    }} maxWidth='xxl'>
-      <Stack alignItems='center' sx={{ width: { xs: '100%', md: '50%' } }}>
-        {
-          forgotePassSecOpen ? (
-            <Stack sx={{
-              width: { xs: '100%', md: '480px' },
-              justifyContent: 'center',
-            }}>
-              <Stack sx={{ width: '100%' }} direction='row' alignItems='center' justifyContent={'space-between'}>
-
-                <Button onClick={() => setForgotePassSecOpen(false)} sx={{
-                  color: 'gray',
-                  mb: 2,
-                }} startIcon={<KeyboardArrowLeft />}>Back</Button>
-              </Stack>
-              {
-                passResetData ?
-                  <Typography sx={{
-                    bgcolor: 'light.main',
-                    borderRadius: '8px',
-                    px: 2, py: 1, color: 'primary.main'
-                  }}>{passResetData.passwordResetMail.message}</Typography> :
-                  <Stack>
-                    <Typography sx={{ fontWeight: 600, fontSize: '25px', mb: 3 }}>Forgote Password?</Typography>
-                    <Input value={forgotEmail.email} sx={{ mb: 2 }} placeholder='Enter Your Email' onChange={(e) => setForgotEmail({ email: e.target.value })} type="text" />
-                    {/* <TextField onChange={(e)=> setForgotEmail(e.target.value)} sx={{ mb: 2 }} fullWidth placeholder='email address' variant="outlined" /> */}
-                    <Button
-                      // isLoading={passResetLoading} 
-                      // disable={passResetLoading} 
-                      // onClick={handleForgotePassword}
-                      variant='contained'
-                    >Send
-                    </Button>
-                  </Stack>
-              }
-            </Stack>
-
-          ) : (
-            <Stack sx={{
-              width: { xs: '100%', md: '480px' },
-              justifyContent: 'center',
-            }}>
-              <Box sx={{
-                mb: 2
+      background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+      padding: 3
+    }}>
+      <Paper elevation={10} sx={{
+        width: '100%',
+        maxWidth: '450px',
+        borderRadius: 2,
+        p: 4,
+        backgroundColor: 'rgba(255, 255, 255, 0.95)'
+      }}>
+        {forgotePassSecOpen ? (
+          <Box>
+            <Button 
+              onClick={() => setForgotePassSecOpen(false)}
+              startIcon={<KeyboardArrowLeft />}
+              sx={{ mb: 3, color: 'text.secondary' }}
+            >
+              Back to Login
+            </Button>
+            
+            {passResetData ? (
+              <Typography sx={{
+                bgcolor: 'primary.light',
+                color: 'primary.main',
+                p: 2,
+                borderRadius: 1
               }}>
-                <Typography sx={{ fontSize: '35px', color: 'primary.main', fontWeight: 600, textAlign: 'center' }}>Edu-Quest</Typography>
-                {/* <img width='100%' src="logo.svg" alt="" /> */}
-              </Box>
-              <Typography sx={{ fontWeight: 600, fontSize: '25px', mb: 3, textAlign: 'center' }}>Sign in</Typography>
-              <form onSubmit={handleSubmit}>
+                {passResetData.passwordResetMail.message}
+              </Typography>
+            ) : (
+              <Stack spacing={3}>
+                <Typography variant="h5" fontWeight={600}>
+                  Reset Password
+                </Typography>
                 <TextField
-                  name='email'
-                  required
-                  sx={{ mb: 2 }}
                   fullWidth
-                  label="Email"
-                  variant="standard"
+                  label="Email Address"
+                  variant="outlined"
+                  value={forgotEmail.email}
+                  onChange={(e) => setForgotEmail({ email: e.target.value })}
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                >
+                  Send Reset Link
+                </Button>
+              </Stack>
+            )}
+          </Box>
+        ) : (
+          <Stack spacing={3}>
+            <Typography variant="h4" textAlign="center" color="primary.main" fontWeight={700}>
+              Car Advertisement
+            </Typography>
+            
+            <Typography variant="h5" textAlign="center" color="text.secondary">
+              Admin Portal
+            </Typography>
+
+            <form onSubmit={handleSubmit}>
+              <Stack spacing={3}>
+                <TextField
+                  name="email"
+                  label="Email Address"
+                  variant="outlined"
+                  required
+                  fullWidth
                   onKeyDown={handleKeyPress}
                 />
+
                 <TextField
-                  sx={{ mb: 1 }}
-                  variant="standard"
-                  type={passwordVisibility ? "text" : "password"}
                   name="password"
                   label="Password"
+                  variant="outlined"
                   required
                   fullWidth
+                  type={passwordVisibility ? "text" : "password"}
                   onKeyDown={handleKeyPress}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                          aria-label="toggle password visibility"
                           onClick={passwordVisibilityHandler}
-                          onMouseDown={passwordVisibilityHandler}
                           edge="end"
                         >
                           {passwordVisibility ? <VisibilityOff /> : <Visibility />}
@@ -149,21 +150,36 @@ const Login = () => {
                     ),
                   }}
                 />
-                <Typography onClick={() => setForgotePassSecOpen(true)} sx={{ fontSize: '15px', mb: 4, mt: 1, color: 'primary.main ', cursor: 'pointer' }}>Forgote Password?</Typography>
-                <CButton type='submit' style={{ mb: 2, width: '100%' }}
+
+                <Typography
+                  onClick={() => setForgotePassSecOpen(true)}
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    textAlign: 'right',
+                    '&:hover': {
+                      textDecoration: 'underline'
+                    }
+                  }}
+                >
+                  Forgot Password?
+                </Typography>
+
+                <CButton
+                  type="submit"
                   loading={mutation.isPending}
-                  variant='contained'
+                  variant="contained"
+                  size="large"
+                  fullWidth
                 >
                   Sign In
                 </CButton>
-              </form>
-
-            </Stack>
-          )
-        }
-      </Stack>
+              </Stack>
+            </form>
+          </Stack>
+        )}
+      </Paper>
     </Container>
-
   )
 }
 

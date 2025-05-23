@@ -1,16 +1,16 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(() => localStorage.getItem('admin'));
+  const [token, setToken] = useState(() => localStorage.getItem('access_token'));
 
   useEffect(() => {
     if (token) {
-      localStorage.setItem('admin', token);
+      localStorage.setItem('access_token', token);
     } else {
-      localStorage.removeItem('admin');
+      localStorage.removeItem('access_token');
     }
   }, [token]);
 
