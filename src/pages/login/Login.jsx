@@ -5,8 +5,8 @@ import { KeyboardArrowLeft, Visibility, VisibilityOff } from '@mui/icons-materia
 import toast from 'react-hot-toast';
 import CButton from '../../common/CButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { axiosReq } from '../../../utils/axiosReq';
 import useAuth from '../../hook/useAuth';
+import apiReq from '../../../utils/axiosReq'
 
 const Login = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -16,7 +16,7 @@ const Login = () => {
   const { setToken } = useAuth()
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (input) => axiosReq.post('/auth/login', input),
+    mutationFn: (input) => apiReq.post('api/auth/login', input),
     onSuccess: (res) => {
       if (res.data.user.role === 'admin') {
         queryClient.invalidateQueries(['login']);

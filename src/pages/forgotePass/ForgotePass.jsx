@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Box, } from '@mui/material'
-import { axiosReq } from '../../../utils/axiosReq'
+import apiReq from '../../../utils/axiosReq'
 import CTextField from '../../common/CTextField'
 import CButton from '../../common/CButton'
 
@@ -10,7 +10,7 @@ const ForgotePass = () => {
   const [email, setEmail] = useState('')
 
   const mutation = useMutation({
-    mutationFn: (email) => axiosReq.post('/auth/forgot-password', { email }),
+    mutationFn: (email) => apiReq.post('/auth/forgot-password', { email }),
     onSuccess: (res) => {
       setEmail('')
       toast.success(res.data.message)

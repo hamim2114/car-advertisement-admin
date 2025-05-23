@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import useAuth from '../hook/useAuth'
 import { useQuery } from '@tanstack/react-query'
-import { axiosReq } from '../../utils/axiosReq'
+import apiReq from '../../utils/axiosReq'
 
 
 export const UserContext = createContext()
@@ -14,7 +14,7 @@ const UserProvider = ({ children }) => {
   const { data } = useQuery({
     enabled: !!token,
     queryKey: ['user'],
-    queryFn: () => axiosReq.get('/auth/me', { headers: { Authorization: token } }),
+    queryFn: () => apiReq.get('api/auth/me', { headers: { Authorization: token } }),
   })
   useEffect(() => {
     if (data) {

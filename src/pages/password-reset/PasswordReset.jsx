@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Box } from '@mui/material'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { axiosReq } from '../../../utils/axiosReq'
+import apiReq from '../../../utils/axiosReq'
 import CTextField from '../../common/CTextField'
 import CButton from '../../common/CButton'
 
@@ -13,7 +13,7 @@ const PasswordReset = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const mutation = useMutation({
-    mutationFn: (newPassword) => axiosReq.post('/auth/reset-password', { token, newPassword }),
+    mutationFn: (newPassword) => apiReq.post('/auth/reset-password', { token, newPassword }),
     onSuccess: (res) => {
       toast.success(res.data.message)
       setPassword('')

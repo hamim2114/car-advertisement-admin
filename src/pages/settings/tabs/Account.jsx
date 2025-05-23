@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { axiosReq } from '../../../../utils/axiosReq';
+import apiReq from '../../../../utils/axiosReq';
 import CButton from '../../../common/CButton';
 import useAuth from '../../../hook/useAuth';
 
@@ -27,7 +27,7 @@ const Account = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const mutation = useMutation({
-    mutationFn: (input) => axiosReq.put('/auth/change-password', input, { headers: { Authorization: token } }),
+    mutationFn: (input) => apiReq.put('api/auth/change-password', input, { headers: { Authorization: token } }),
     onSuccess: (res) => {
       toast.success(res.data);
       setEditOn(false)

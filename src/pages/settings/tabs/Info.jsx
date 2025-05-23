@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Stack, TextField, Typography } from '@mui/material
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
-import { axiosReq } from '../../../../utils/axiosReq'
+import apiReq from '../../../../utils/axiosReq'
 import { deleteImage, uploadImage } from '../../../../utils/upload'
 import CTextField from '../../../common/CTextField'
 import CButton from '../../../common/CButton'
@@ -34,7 +34,7 @@ const Info = () => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
-    mutationFn: (input) => axiosReq.put('/info/update', input, { headers: { Authorization: token } }),
+    mutationFn: (input) => apiReq.put('/info/update', input, { headers: { Authorization: token } }),
     onSuccess: (res) => {
       queryClient.invalidateQueries(['info'])
       toast.success(res.data)
