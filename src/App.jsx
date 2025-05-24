@@ -10,6 +10,7 @@ import useAuth from './hook/useAuth'
 import ForgotePass from './pages/forgotePass/ForgotePass'
 import PasswordReset from './pages/password-reset/PasswordReset'
 import CreateLink from './pages/createLink/CreateLink'
+import RedirectLinks from './pages/redirectLinks/RedirectLinks'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -37,6 +38,7 @@ function App() {
         <Route path='/dashboard' element={token ? <Layout /> : <Login />}>
           <Route path='' element={<Dashboard />} />
           <Route path='create-link' element={<CreateLink />} />
+          <Route path='redirect-links' element={<RedirectLinks />} />
           <Route path='setting' element={<Setting />} />
           <Route path='*' element={<NotFound />} />
         </Route>

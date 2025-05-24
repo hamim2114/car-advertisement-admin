@@ -16,7 +16,7 @@ const CDrawer = ({ handleDrawerClose }) => {
 
   const links = [
     { name: 'Dashboard', icon: <GridViewOutlined />, path: '', end: true },
-    { name: 'Advertisements', icon: <ListAlt />, path: 'advertisement' },
+    { name: 'Redirect Links', icon: <ListAlt />, path: 'redirect-links' },
     { name: 'Create Link ', icon: <AddBoxOutlined />, path: 'create-link' },
     { name: 'Setting ', icon: <SettingsOutlined />, path: 'setting' },
   ];

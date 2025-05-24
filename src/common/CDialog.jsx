@@ -12,7 +12,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Grow ref={ref} {...props} />;
 });
 
-export default function CDialog({ open, onClose, children, maxWidth, fullScreen, title, disableOutsideClick }) {
+export default function CDialog({
+  open,
+  onClose,
+  children,
+  maxWidth,
+  fullScreen,
+  title,
+  disableOutsideClick,
+  closeButton = false
+}) {
   const isMobile = useIsMobile();
 
   return (
@@ -34,9 +43,13 @@ export default function CDialog({ open, onClose, children, maxWidth, fullScreen,
       <DialogContent>
         <Stack direction='row' alignItems='center' justifyContent='space-between' sx={{ marginBottom: 2 }}>
           <Typography variant="h6">{title || 'Dialog Title'}</Typography>
-          <IconButton onClick={onClose} aria-label="close">
-            <Close />
-          </IconButton>
+          {
+            closeButton && (
+              <IconButton onClick={onClose} aria-label="close">
+                <Close />
+              </IconButton>
+            )
+          }
         </Stack>
         {children}
       </DialogContent>

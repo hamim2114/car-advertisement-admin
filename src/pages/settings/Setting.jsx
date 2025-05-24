@@ -63,7 +63,7 @@ const Setting = () => {
       bgcolor: '#fff',
       p: 3, borderRadius: '16px',
       minHeight: '100vh'
-    }} maxWidth='md'>
+    }} maxWidth='lg'>
       <Stack direction='row' sx={{ justifyContent: 'center', }}>
         <Tabs
           variant="scrollable"
