@@ -9,7 +9,7 @@ import CButton from "../../common/CButton";
 
 const CreateLink = () => {
   const [customName, setCustomName] = useState('');
-  const [destinationUrl, setDestinationUrl] = useState('');
+  const [destinationUrl, setDestinationUrl] = useState('https://');
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
