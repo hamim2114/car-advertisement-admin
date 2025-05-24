@@ -14,7 +14,7 @@ const UpdateLinks = ({ linkData, closeDialog }) => {
   const [error, setError] = useState('');
 
   const queryClient = useQueryClient();
-
+  console.log(linkData);
   const updateLinkMutation = useMutation({
     mutationFn: async (data) => {
       const response = await apiReq.put(`api/links/${linkData._id}`, data);

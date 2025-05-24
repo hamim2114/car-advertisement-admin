@@ -14,7 +14,7 @@ const RedirectLinks = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editLinkData, setEditLinkData] = useState(null);
-  const [deleteLinkId, setDeleteLinkId] = useState(null);
+  const [deleteLinkData, setDeleteLinkData] = useState(null);
 
 
   const { data, isLoading, isError } = useQuery({
@@ -36,13 +36,13 @@ const RedirectLinks = () => {
     setEditLinkData(row);
   }
 
-  const handleDeleteDialog = (id) => {
+  const handleDeleteDialog = (data) => {
     setDeleteDialogOpen(true);
-    setDeleteLinkId(id);
+    setDeleteLinkData(data);
   }
 
   const handleDelete = () => {
-    deleteLinkMutation.mutate(deleteLinkId);
+    deleteLinkMutation.mutate(deleteLinkData._id);
     setDeleteDialogOpen(false);
   }
 
@@ -52,7 +52,7 @@ const RedirectLinks = () => {
       field: 'details', headerName: '', width: 100,
       renderCell: (params) => <Link
         style={{ textDecoration: 'none' }}
-        to={`${params.row._id}`}>
+        to={`${params.row.slug}`}>
         details
       </Link>
     },
@@ -129,7 +129,7 @@ const RedirectLinks = () => {
           <IconButton onClick={() => handleEdit(params.row)} >
             <EditOutlined fontSize='small' />
           </IconButton>
-          <IconButton onClick={() => handleDeleteDialog(params.row._id)} >
+          <IconButton onClick={() => handleDeleteDialog(params.row)} >
             <DeleteOutlined fontSize='small' />
           </IconButton>
         </Stack>
@@ -161,7 +161,7 @@ const RedirectLinks = () => {
 
       {/* delete dialog */}
       <CDialog title='Delete Link' open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-        <Typography>Are you sure you want to delete this link?</Typography>
+        <Typography>Are you sure you want to delete <b>{deleteLinkData?.slug}</b> ?</Typography>
         <Typography color='error'>This action cannot be undone.</Typography>
         <DialogActions>
           <CButton onClick={() => setDeleteDialogOpen(false)}>Cancel</CButton>

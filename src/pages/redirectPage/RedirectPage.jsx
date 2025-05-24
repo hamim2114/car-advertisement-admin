@@ -1,29 +1,61 @@
-import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+import apiReq from '../../../utils/axiosReq';
+import { useEffect, useState } from 'react';
 
 const RedirectPage = () => {
   const { slug } = useParams();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [linkInfo, setLinkInfo] = useState(null);
 
+  // Fetch link destination first
   useEffect(() => {
-    window.google.accounts.id.initialize({
-      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      callback: async (response) => {
-        const { credential } = response;
-        const userInfo = await axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${credential}`);
-        const email = userInfo.data.email;
+    const fetchLink = async () => {
+      try {
+        const res = await apiReq.get(`/api/links/${slug}`);
+        setLinkInfo(res.data);
+      } catch (err) {
+        setError('Invalid or expired link');
+      }
+    };
 
-        const linkRes = await axios.get(`/api/links/${slug}`);
-        await axios.post(`/api/visits/${slug}`, { email });
-
-        window.location.href = linkRes.data.destinationUrl;
-      },
-    });
-
-    window.google.accounts.id.prompt();
+    fetchLink();
   }, [slug]);
 
-  return <div>Redirecting... Please wait</div>;
+  const handleLoginSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      const decoded = jwtDecode(credentialResponse.credential);
+      const email = decoded.email;
+
+      await apiReq.post(`/api/visits/${slug}`, { email });
+
+      // Redirect
+      window.location.href = linkInfo.destinationUrl;
+    } catch (err) {
+      setError('Something went wrong while logging in or redirecting.');
+      setLoading(false);
+    }
+  };
+
+  const handleLoginError = () => {
+    setError('Google sign-in was cancelled or failed.');
+  };
+
+  if (error) return <div style={{ color: 'red' }}>{error}</div>;
+
+  if (!linkInfo) return <div>Loading link data...</div>;
+
+  if (loading) return <div>Logging in... Redirecting...</div>;
+
+  return (
+    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+      <h3>Continue to view the page</h3>
+      <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
+    </div>
+  );
 };
 
 export default RedirectPage;

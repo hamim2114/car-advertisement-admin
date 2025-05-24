@@ -11,6 +11,8 @@ import ForgotePass from './pages/forgotePass/ForgotePass'
 import PasswordReset from './pages/password-reset/PasswordReset'
 import CreateLink from './pages/createLink/CreateLink'
 import RedirectLinks from './pages/redirectLinks/RedirectLinks'
+import RedirectLinkSingle from './pages/redirectLinkSingle/RedirectLinkSingle'
+import RedirectPage from './pages/redirectPage/RedirectPage'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -31,6 +33,7 @@ function App() {
     >
       <ScrollToTop />
       <Routes>
+        <Route path='/:slug' element={<RedirectPage />} />
         <Route path='/' element={<Navigate to={token ? '/dashboard' : '/login'} />} />
         <Route path='/login' element={token ? <Navigate to='/dashboard' /> : <Login />} />
         <Route path='forgot-password' element={<ForgotePass />} />
@@ -39,6 +42,7 @@ function App() {
           <Route path='' element={<Dashboard />} />
           <Route path='create-link' element={<CreateLink />} />
           <Route path='redirect-links' element={<RedirectLinks />} />
+          <Route path='redirect-links/:slug' element={<RedirectLinkSingle />} />
           <Route path='setting' element={<Setting />} />
           <Route path='*' element={<NotFound />} />
         </Route>
