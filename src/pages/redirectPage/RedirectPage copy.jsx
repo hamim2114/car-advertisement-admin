@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import apiReq from '../../../utils/axiosReq';
-import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 const RedirectPage = () => {
   const { slug } = useParams();
@@ -31,10 +30,6 @@ const RedirectPage = () => {
       const decoded = jwtDecode(credentialResponse.credential);
       const email = decoded.email;
 
-      if (!email) {
-        throw new Error('Email not found in decoded token');
-      }
-
       await apiReq.post(`/api/visits/${slug}`, { email });
 
       // Redirect
@@ -49,32 +44,17 @@ const RedirectPage = () => {
     setError('Google sign-in was cancelled or failed.');
   };
 
-  if (error) {
-    return (
-      <Box sx={{ p: 2, color: 'error.main', textAlign: 'center' }}>
-        {error}
-      </Box>
-    );
-  }
+  if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
-  if (!linkInfo) {
-    return (
-      <Box sx={{ p: 2, textAlign: 'center' }}>
-        Loading link data...
-      </Box>
-    );
-  }
+  if (!linkInfo) return <div>Loading link data...</div>;
+
+  if (loading) return <div>Logging in... Redirecting...</div>;
 
   return (
-    <Box sx={{ p: 2, textAlign: 'center' }}>
-      <h2>Please sign in to continue</h2>
-      <GoogleLogin
-        onSuccess={handleLoginSuccess}
-        onError={handleLoginError}
-        useOneTap
-      />
-      {loading && <p>Redirecting...</p>}
-    </Box>
+    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+      <h3>Continue to view the page</h3>
+      <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
+    </div>
   );
 };
 
