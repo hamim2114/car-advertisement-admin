@@ -72,6 +72,7 @@ const RedirectPage = () => {
         onSuccess={handleLoginSuccess}
         onError={handleLoginError}
         useOneTap
+        auto_select
       />
       {loading && <p>Redirecting...</p>}
     </Box>
