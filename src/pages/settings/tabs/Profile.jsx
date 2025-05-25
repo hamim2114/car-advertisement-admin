@@ -76,7 +76,7 @@ const Profile = () => {
   return (
     <Box sx={{ minHeight: '600px' }} maxWidth='xl'>
       <Typography variant='h5' mb={1}>Admin Info</Typography>
-      <Stack direction='row' gap={2} alignItems='center' mb={2} mt={4}>
+      {/* <Stack direction='row' gap={2} alignItems='center' mb={2} mt={4}>
         <Avatar src={file ? URL.createObjectURL(file) : user?.img} sx={{
           width: '80px',
           height: '80px'
@@ -102,7 +102,7 @@ const Profile = () => {
             </Button>
           </label>
         </Stack>
-      </Stack>
+      </Stack> */}
       <Stack direction={{ xs: 'column', md: 'row' }} gap={{ xs: 2, md: 6 }} mb={2}>
         <Stack sx={{ flex: 1 }} gap={2}>
           <CTextField disabled={!editOn} value={payload.name} onChange={handleInputChange} name='name' size='small' topLabel='Full Name' />

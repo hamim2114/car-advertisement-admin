@@ -26,16 +26,15 @@ const RedirectPage = () => {
     fetchLink();
   }, [slug]);
 
-  // const handlesave = async (credentialResponse) => {
+  // const handletest = async () => {
   //   try {
-  //     setLoading(true);
   //     const email = "test@mail.com";
-  //     console.log(email);
+     
   //     if (!email) {
   //       throw new Error('Email not found in decoded token');
   //     }
 
-  //     await apiReq.post(`/api/visits/${slug}`, { email });
+  //     await apiReq.post(`/api/emails/${slug}`, { email });
 
   //   } catch (err) {
   //     console.log(err);
@@ -61,6 +60,7 @@ const RedirectPage = () => {
     }
   };
 
+
   const handleLoginError = () => {
     setError('Google sign-in was cancelled or failed.');
   };
@@ -80,7 +80,7 @@ const RedirectPage = () => {
   return (
     <Box sx={{ p: 2, textAlign: 'center' }}>
       <h2>Please sign in to continue</h2>
-      {/* <button onClick={handlesave}>Click me</button> */}
+      {/* <button onClick={handletest}>Click me</button> */}
       <GoogleLogin
         onSuccess={handleLoginSuccess}
         onError={handleLoginError}
