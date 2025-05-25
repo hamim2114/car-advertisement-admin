@@ -153,7 +153,16 @@ const RedirectLinkSingle = () => {
                       <TableRow key={index}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>{item?.email}</TableCell>
-                        <TableCell>{format(item?.visitedAt, 'dd MMM yyyy HH:mm a')}</TableCell>
+                        <TableCell>
+                          <Stack justifyContent="center">
+                            <Typography variant="body2" color="text.secondary">
+                              {format(item?.visitedAt, 'dd MMM yyyy')}
+                            </Typography>
+                            <Typography sx={{ fontSize: '12px' }} color="text.secondary">
+                              {format(item?.visitedAt, ' hh:mm a')}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
