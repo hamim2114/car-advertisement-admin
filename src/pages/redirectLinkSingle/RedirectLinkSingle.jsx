@@ -36,7 +36,7 @@ const RedirectLinkSingle = () => {
 
   const emailList = data?.data?.emailList || [];
 
-
+  console.log(data)
 
   return (
     <Box sx={{ bgcolor: '#fff', p: 4, borderRadius: '24px', minHeight: '100vh', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }} maxWidth='lg'>
@@ -55,10 +55,16 @@ const RedirectLinkSingle = () => {
             <Divider sx={{ mb: 3 }} />
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={3}>
-              <Box>
-                <Typography variant="subtitle2" color="text.secondary" mb={1}>Slug</Typography>
-                <Chip label={data?.data?.slug} sx={{ fontSize: '1rem', py: 2 }} />
-              </Box>
+              <Stack spacing={2}>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <Typography color="text.secondary" mb={1}>Slug</Typography>
+                  <Chip label={data?.data?.slug} sx={{ fontSize: '1rem', py: 2 }} />
+                </Stack>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <Typography color="text.secondary" mb={1}>Created At : </Typography>
+                  <Typography variant="subtitle2" color="text.secondary" mb={1}>{format(data?.data?.createdAt, 'dd MMM yyyy')}</Typography>
+                </Stack>
+              </Stack>
 
               <Box>
                 <Typography variant="subtitle2" color="text.secondary" mb={1}>Destination URL</Typography>

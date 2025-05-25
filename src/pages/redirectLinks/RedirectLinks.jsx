@@ -2,7 +2,7 @@ import { Box, DialogActions, DialogContent, DialogContentText, DialogTitle, Icon
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import apiReq from '../../../utils/axiosReq';
-import { DeleteOutlined, EditOutlined } from '@mui/icons-material';
+import { DeleteOutlined, EditOutlined, EmailOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import DataTable from '../../common/DataTable';
@@ -21,7 +21,7 @@ const RedirectLinks = () => {
     queryFn: async () => await apiReq.get('api/links'),
     queryKey: ['links']
   });
-
+  console.log(data);
   const queryClient = useQueryClient();
 
   const deleteLinkMutation = useMutation({
@@ -30,7 +30,7 @@ const RedirectLinks = () => {
       queryClient.invalidateQueries(['links']);
     }
   });
-  
+
   const handleEdit = (row) => {
     setEditDialogOpen(true);
     setEditLinkData(row);
@@ -48,26 +48,6 @@ const RedirectLinks = () => {
 
 
   const columns = [
-    {
-      field: 'details', headerName: '', width: 100,
-      renderCell: (params) => <Link
-        style={{ textDecoration: 'none' }}
-        to={`${params.row.slug}`}>
-        details
-      </Link>
-    },
-
-
-    {
-      field: 'createdAt',
-      headerName: 'Created Date',
-      width: 200,
-      renderCell: (params) => (
-        <Stack height='100%' justifyContent='center'>
-          <Typography> {format(params.row.createdAt, 'dd-MMM-yyyy')}</Typography>
-        </Stack>
-      ),
-    },
 
     {
       field: 'slug',
@@ -75,10 +55,41 @@ const RedirectLinks = () => {
       width: 200,
       renderCell: (params) => (
         <Stack justifyContent="center" height='100%'>
-          <Typography>{params.row.slug}</Typography>
+          <Link to={`${params.row.slug}`} style={{ textDecoration: 'none' }}>
+            <Typography>{params.row.slug}</Typography>
+          </Link>
         </Stack>
       ),
     },
+
+    {
+      field: 'totalEmails',
+      headerName: 'Total Emails',
+      width: 150,
+      renderCell: (params) => (
+        <Stack justifyContent="center" height='100%'>
+          <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <EmailOutlined sx={{ fontSize: '20px', color: 'primary.main' }} />
+            {params.row.emailCount}
+          </Typography>
+        </Stack>
+      ),
+    },
+
+    {
+      field: 'visits',
+      headerName: 'Visits',
+      width: 150,
+      renderCell: (params) => (
+        <Stack justifyContent="center" height='100%'>
+          <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <VisibilityOutlined sx={{ fontSize: '20px', color: 'primary.main' }} />
+            {params.row.visits}
+          </Typography>
+        </Stack>
+      ),
+    },
+
     {
       field: 'destinationUrl',
       headerName: 'Destination URL',
@@ -89,7 +100,6 @@ const RedirectLinks = () => {
         </Stack>
       ),
     },
-
     // {
     //   field: 'status',
     //   headerName: 'Status',

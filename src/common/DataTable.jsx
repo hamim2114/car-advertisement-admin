@@ -38,7 +38,7 @@ const DataTable = ({
 
   return (
     <Box
-      sx={{ width: { xs: '96vw', md: '100%' } }}
+      sx={{ width: '100%' }}
     >
       <DataGrid
         sx={{ bgcolor: '#fff' }}

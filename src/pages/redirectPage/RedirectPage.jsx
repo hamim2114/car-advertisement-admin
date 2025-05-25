@@ -79,14 +79,23 @@ const RedirectPage = () => {
   }
 
   return (
-    <Box sx={{ p: 2, textAlign: 'center' }}>
-      <h2>Please sign in to continue</h2>
+    <Box sx={{ 
+      p: 2, 
+      textAlign: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh'
+    }}>
       {/* <button onClick={handletest}>Click me</button> */}
       <GoogleLogin
         onSuccess={handleLoginSuccess}
         onError={handleLoginError}
         useOneTap
         auto_select
+        shape="rectangular"
+        text="continue_with"
       />
       {loading && <Loader />}
     </Box>
