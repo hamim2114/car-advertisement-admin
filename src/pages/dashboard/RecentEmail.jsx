@@ -41,7 +41,7 @@ const RecentEmail = ({ data }) => {
       </Typography>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataTable
-          rows={data?.data?.recentEmails || []}
+          rows={data || []}
           columns={emailsColumns}
           getRowId={(row) => row._id}
         />
