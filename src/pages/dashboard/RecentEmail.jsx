@@ -14,14 +14,14 @@ const RecentEmail = ({ data }) => {
       width: 200,
       renderCell: (params) => (
         <Link
-          to={`redirect-links/${params.value.slug}`}
+          to={`redirect-links/${params?.value?.slug}`}
           style={{
             textDecoration: 'none',
             color: '#1976d2',
             fontWeight: 500
           }}
         >
-          {params.value.slug}
+          {params?.value?.slug}
         </Link>
       )
     },
