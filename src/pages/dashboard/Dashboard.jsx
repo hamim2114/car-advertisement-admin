@@ -81,7 +81,7 @@ const Dashboard = () => {
       </Stack>
 
       <TopPerformLinks data={data?.data?.topLinks} />
-      <RecentEmail data={data?.data?.recentEmails} />
+      {/* <RecentEmail data={data?.data?.recentEmails} /> */}
     </Box>
   );
 };
