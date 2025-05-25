@@ -3,10 +3,11 @@ import React from 'react'
 import DataTable from '../../common/DataTable'
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
+import { DataGrid } from '@mui/x-data-grid';
 
 const RecentEmail = ({ data }) => {
   const emailsColumns = [
-    
+
     {
       field: 'link',
       headerName: 'Link',
@@ -50,13 +51,12 @@ const RecentEmail = ({ data }) => {
       <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
         Recent Email Captures
       </Typography>
-      <Box sx={{ height: 400, width: '100%' }}>
-        <DataTable
-          rows={data || []}
-          columns={emailsColumns}
-          getRowId={(row) => row._id}
-        />
-      </Box>
+      <DataGrid
+        rows={data || []}
+        columns={emailsColumns}
+        getRowId={(row) => row._id}
+        hideFooter
+      />
     </Box>
   )
 }

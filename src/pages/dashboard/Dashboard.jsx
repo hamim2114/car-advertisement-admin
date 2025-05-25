@@ -23,7 +23,7 @@ const Dashboard = () => {
       bgcolor: '#fff',
       p: { xs: 2, sm: 3 },
       borderRadius: '16px',
-      minHeight: '100vh'
+      minHeight: '100%'
     }} maxWidth='lg'>
       <Typography variant="h4" gutterBottom sx={{
         mb: { xs: 3, sm: 4 },
@@ -34,7 +34,7 @@ const Dashboard = () => {
         Analytics Dashboard
       </Typography>
 
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 3, sm: 4 } }}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 3, sm: 6} }}>
         <Card sx={{ flex: 1, height: '100%', bgcolor: '#f5f5f5' }}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom variant="subtitle1">
@@ -77,9 +77,9 @@ const Dashboard = () => {
             </Typography>
           </CardContent>
         </Card>
+
       </Stack>
 
-        
       <TopPerformLinks data={data?.data?.topLinks} />
       <RecentEmail data={data?.data?.recentEmails} />
     </Box>
