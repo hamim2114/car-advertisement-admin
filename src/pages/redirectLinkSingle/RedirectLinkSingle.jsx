@@ -103,7 +103,7 @@ const RedirectLinkSingle = () => {
 
             <Box flex={1} sx={{ p: 2, bgcolor: '#e3f2fd', borderRadius: 2 }}>
               <Typography variant="h4" fontWeight="bold" color="#1976d2">
-                {data?.data?.uniqueEmails || 0}
+                {emailList?.length}
               </Typography>
               <Typography variant="subtitle2" color="text.secondary">Unique Emails</Typography>
             </Box>

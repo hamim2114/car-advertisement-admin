@@ -51,7 +51,7 @@ const RedirectPage = () => {
         throw new Error('Email not found in decoded token');
       }
 
-      await apiReq.post(`/api/visits/${slug}`, { email });
+      await apiReq.post(`/api/emails/${slug}`, { email });
 
       // Redirect
       window.location.href = linkInfo.destinationUrl;
