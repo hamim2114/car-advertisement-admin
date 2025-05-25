@@ -55,6 +55,7 @@ const RedirectPage = () => {
       // Redirect
       window.location.href = linkInfo.destinationUrl;
     } catch (err) {
+      console.log(err);
       setError('Something went wrong while logging in or redirecting.');
       setLoading(false);
     }
