@@ -6,21 +6,22 @@ import { useParams, useNavigate } from 'react-router-dom';
 import CDialog from '../../common/CDialog';
 import UpdateLinks from '../redirectLinks/UpdateLinks';
 import { Edit as EditIcon, Link as LinkIcon, Email as EmailIcon, Visibility as VisibilityIcon, ArrowBack, Download as DownloadIcon } from '@mui/icons-material';
+import { format } from 'date-fns';
 
 const RedirectLinkSingle = () => {
   const { slug } = useParams();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editLinkData, setEditLinkData] = useState(null);
-  const [filters, setFilters] = useState({ from: '', to: '', groupBy: 'day' });
+  const [filters, setFilters] = useState({ from: '', to: '' });
   const navigate = useNavigate();
 
-  const queryUrl = `api/links/${slug}?from=${filters.from}&to=${filters.to}&groupBy=${filters.groupBy}`;
+  const queryUrl = `api/links/${slug}?from=${filters.from}&to=${filters.to}`;
 
   const { data, refetch } = useQuery({
     queryFn: async () => await apiReq.get(queryUrl),
     queryKey: ['link', slug, filters]
   });
-
+  console.log(data?.data);
   const handleEdit = () => {
     setEditDialogOpen(true);
     setEditLinkData(data?.data);
@@ -41,23 +42,26 @@ const RedirectLinkSingle = () => {
     link.remove();
   };
 
-  const groupedList = data?.data?.groupedList || [];
+  const emailList = data?.data?.emailList || [];
 
   return (
     <Box sx={{ bgcolor: '#fff', p: 4, borderRadius: '24px', minHeight: '100vh', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }} maxWidth='lg'>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={4}>
+      {/* <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
         <IconButton onClick={() => navigate(-1)}>
           <ArrowBack />
         </IconButton>
-        {/* <IconButton onClick={handleEdit} color="primary" sx={{ bgcolor: '#e3f2fd', '&:hover': { bgcolor: '#1976d2', color: 'white' } }}>
+        <IconButton onClick={handleEdit} color="primary" sx={{ bgcolor: '#e3f2fd', '&:hover': { bgcolor: '#1976d2', color: 'white' } }}>
           <EditIcon />
-        </IconButton> */}
-      </Stack>
+        </IconButton>
+      </Stack> */}
 
       <Stack spacing={4}>
         <Box sx={{ p: 3, borderRadius: 3, border: '1px solid #eee' }}>
           <Stack direction="row" alignItems="center" spacing={2} mb={2}>
-            <LinkIcon sx={{ color: '#1976d2' }} />
+            <IconButton onClick={() => navigate(-1)}>
+              <ArrowBack />
+            </IconButton>
+            {/* <LinkIcon sx={{ color: '#1976d2' }} /> */}
             <Typography variant="h6" fontWeight="500">Link Information</Typography>
           </Stack>
           <Divider sx={{ mb: 3 }} />
@@ -107,6 +111,7 @@ const RedirectLinkSingle = () => {
 
           <Stack direction="row" spacing={2} mt={4}>
             <TextField
+              size="small"
               type="date"
               label="From"
               InputLabelProps={{ shrink: true }}
@@ -114,23 +119,16 @@ const RedirectLinkSingle = () => {
               onChange={e => setFilters({ ...filters, from: e.target.value })}
             />
             <TextField
+              size="small"
               type="date"
               label="To"
               InputLabelProps={{ shrink: true }}
               value={filters.to}
               onChange={e => setFilters({ ...filters, to: e.target.value })}
             />
-            <TextField
-              select
-              label="Group By"
-              value={filters.groupBy}
-              onChange={e => setFilters({ ...filters, groupBy: e.target.value })}
-            >
-              <MenuItem value="day">Day</MenuItem>
-              <MenuItem value="email">Email</MenuItem>
-            </TextField>
-            <Button variant="contained" onClick={() => refetch()}>Apply Filters</Button>
-            <Button variant="outlined" startIcon={<DownloadIcon />} onClick={handleExport}>Export CSV</Button>
+
+            <Button variant="contained" size="small" onClick={() => refetch()}>Apply Filters</Button>
+            <Button variant="outlined" size="small" startIcon={<DownloadIcon />} onClick={handleExport}>Export CSV</Button>
           </Stack>
         </Box>
 
@@ -141,22 +139,22 @@ const RedirectLinkSingle = () => {
           </Stack>
           <Divider sx={{ mb: 3 }} />
 
-          {groupedList.length > 0 ? (
+          {emailList.length > 0 ? (
             <TableContainer>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>#</TableCell>
-                    <TableCell>{filters.groupBy === 'day' ? 'Date' : 'Email'}</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell>Email</TableCell>
                     <TableCell>Visits</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {groupedList.map((item, index) => (
+                  {emailList.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{index + 1}</TableCell>
-                      <TableCell>{item.label}</TableCell>
-                      <TableCell>{item.count}</TableCell>
+                      <TableCell>{item?.email}</TableCell>
+                      <TableCell>{format(item?.visitedAt, 'dd MMM yyyy HH:mm a')}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -4,6 +4,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import apiReq from '../../../utils/axiosReq';
 import { Box } from '@mui/material';
+import Loader from '../../common/Loader';
 
 const RedirectPage = () => {
   const { slug } = useParams();
@@ -25,6 +26,21 @@ const RedirectPage = () => {
     fetchLink();
   }, [slug]);
 
+  // const handlesave = async (credentialResponse) => {
+  //   try {
+  //     setLoading(true);
+  //     const email = "test@mail.com";
+  //     console.log(email);
+  //     if (!email) {
+  //       throw new Error('Email not found in decoded token');
+  //     }
+
+  //     await apiReq.post(`/api/visits/${slug}`, { email });
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   const handleLoginSuccess = async (credentialResponse) => {
     try {
       setLoading(true);
@@ -58,23 +74,20 @@ const RedirectPage = () => {
   }
 
   if (!linkInfo) {
-    return (
-      <Box sx={{ p: 2, textAlign: 'center' }}>
-        Loading link data...
-      </Box>
-    );
+    return <Loader />;
   }
 
   return (
     <Box sx={{ p: 2, textAlign: 'center' }}>
       <h2>Please sign in to continue</h2>
+      {/* <button onClick={handlesave}>Click me</button> */}
       <GoogleLogin
         onSuccess={handleLoginSuccess}
         onError={handleLoginError}
         useOneTap
         auto_select
       />
-      {loading && <p>Redirecting...</p>}
+      {loading && <Loader />}
     </Box>
   );
 };
