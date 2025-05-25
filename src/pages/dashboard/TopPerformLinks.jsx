@@ -8,7 +8,7 @@ const TopPerformLinks = ({data}) => {
     {
       field: 'slug',
       headerName: 'Slug',
-      flex: 1,
+      width: 200,
       renderCell: (params) => (
         <Link
           to={`redirect-links/${params.value}`}
@@ -25,7 +25,7 @@ const TopPerformLinks = ({data}) => {
     {
       field: 'destinationUrl',
       headerName: 'Destination',
-      flex: 2,
+      width: 200,
       renderCell: (params) => (
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {params.value}
@@ -35,7 +35,7 @@ const TopPerformLinks = ({data}) => {
     {
       field: 'visits',
       headerName: 'Visits',
-      flex: 1,
+      width: 200,
       align: 'right',
       headerAlign: 'right'
     }

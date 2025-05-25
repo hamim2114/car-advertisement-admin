@@ -1,19 +1,16 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import React from 'react'
 import DataTable from '../../common/DataTable'
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const RecentEmail = ({ data }) => {
   const emailsColumns = [
-    {
-      field: 'email',
-      headerName: 'Email',
-      flex: 2
-    },
+    
     {
       field: 'link',
       headerName: 'Link',
-      flex: 1,
+      width: 200,
       renderCell: (params) => (
         <Link
           to={`redirect-links/${params.value.slug}`}
@@ -28,10 +25,24 @@ const RecentEmail = ({ data }) => {
       )
     },
     {
+      field: 'email',
+      headerName: 'Email',
+      width: 300
+    },
+    {
       field: 'visitedAt',
       headerName: 'Captured At',
-      flex: 1,
-      valueFormatter: (params) => new Date(params.value).toLocaleString()
+      width: 200,
+      renderCell: (params) => (
+        <Stack height="100%" justifyContent="center">
+          <Typography variant="body2" color="text.secondary">
+            {format(params.row.visitedAt, 'dd MMM yyyy')}
+          </Typography>
+          <Typography sx={{ fontSize: '12px' }} color="text.secondary">
+            {format(params.row.visitedAt, ' hh:mm a')}
+          </Typography>
+        </Stack>
+      )
     }
   ];
   return (
