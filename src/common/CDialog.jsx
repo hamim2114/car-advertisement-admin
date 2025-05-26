@@ -42,7 +42,7 @@ export default function CDialog({
     >
       <DialogContent>
         <Stack direction='row' alignItems='center' justifyContent='space-between' sx={{ marginBottom: 2 }}>
-          <Typography variant="h6">{title || 'Dialog Title'}</Typography>
+          <Typography variant="h6">{title}</Typography>
           {
             closeButton && (
               <IconButton onClick={onClose} aria-label="close">

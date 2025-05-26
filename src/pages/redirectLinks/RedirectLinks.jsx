@@ -1,10 +1,9 @@
-import { Box, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, Typography } from '@mui/material'
+import { Box, DialogActions,  IconButton, Stack, Typography } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import apiReq from '../../../utils/axiosReq';
 import { DeleteOutlined, EditOutlined, EmailOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { format } from 'date-fns';
 import DataTable from '../../common/DataTable';
 import CDialog from '../../common/CDialog';
 import CButton from '../../common/CButton';
@@ -154,9 +153,10 @@ const RedirectLinks = () => {
       p: 3, borderRadius: '16px',
       minHeight: '100vh'
     }} maxWidth='lg'>
-      <Typography variant="h5" gutterBottom>
-        Redirect Links
-      </Typography>
+        <Typography variant="h5" gutterBottom>
+          Redirect Links
+        </Typography>
+    
 
       <Box mt={4}>
         <DataTable
