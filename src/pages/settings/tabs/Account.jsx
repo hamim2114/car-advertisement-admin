@@ -114,9 +114,9 @@ const Account = () => {
           }
         />
         {passwordErr && <Typography sx={{ fontSize: '14px', my: 1, color: 'red' }}>{passwordErr}</Typography>}
-        <Link to='/forgot-password'>
+        {/* <Link to='/forgot-password'>
           <Button disabled={!editOn} sx={{ width: 'fit-content', mt: 3 }}>Forget Password?</Button>
-        </Link>
+        </Link> */}
         <Stack direction='row' mt={2} justifyContent='space-between'>
           <Box></Box>
           {

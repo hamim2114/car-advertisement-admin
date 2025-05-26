@@ -1,12 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Box, Card, CardContent, Typography, Stack } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import { DataGrid } from '@mui/x-data-grid';
 import apiReq from '../../../utils/axiosReq';
 import Loader from '../../common/Loader';
-import DataTable from '../../common/DataTable';
 import TopPerformLinks from './TopPerformLinks';
-import RecentEmail from './RecentEmail';
 
 const Dashboard = () => {
   const { data, isLoading, isError } = useQuery({

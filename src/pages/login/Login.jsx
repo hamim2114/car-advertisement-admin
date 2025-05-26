@@ -151,7 +151,7 @@ const Login = () => {
                   }}
                 />
 
-                <Typography
+                {/* <Typography
                   onClick={() => setForgotePassSecOpen(true)}
                   sx={{
                     color: 'primary.main',
@@ -163,7 +163,7 @@ const Login = () => {
                   }}
                 >
                   Forgot Password?
-                </Typography>
+                </Typography> */}
 
                 <CButton
                   type="submit"

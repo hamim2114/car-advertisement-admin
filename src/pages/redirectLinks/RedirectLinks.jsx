@@ -172,7 +172,7 @@ const RedirectLinks = () => {
       {/* delete dialog */}
       <CDialog title='Delete Link' open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
         <Typography>Are you sure you want to delete <b>{deleteLinkData?.slug}</b> ?</Typography>
-        <Typography color='error'>This action cannot be undone.</Typography>
+        <Typography color='error'>It also delete all the emails collected with this link</Typography>
         <DialogActions>
           <CButton onClick={() => setDeleteDialogOpen(false)}>Cancel</CButton>
           <CButton variant='contained' loading={deleteLinkMutation.isPending} onClick={handleDelete} color="error">Delete</CButton>
