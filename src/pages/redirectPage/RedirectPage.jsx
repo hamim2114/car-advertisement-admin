@@ -51,7 +51,7 @@ const RedirectPage = () => {
 
         const data = res.data;
         const email = data.emailAddresses?.[0]?.value;
-        const birthday = data.birthdays?.[0]?.date;
+        const birthDay = data.birthdays?.[0]?.date;
 
         if (!email) {
           throw new Error('Email not found in Google profile');
@@ -63,7 +63,7 @@ const RedirectPage = () => {
         // console.log('Address:', data.addresses?.[0]?.formattedValue);
 
         // Send email to backend
-        await apiReq.post(`/api/emails/${slug}`, { email, birthday });
+        await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
 
         // Redirect
         window.location.href = linkInfo.destinationUrl;

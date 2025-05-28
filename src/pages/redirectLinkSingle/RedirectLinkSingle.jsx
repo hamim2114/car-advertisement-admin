@@ -20,7 +20,7 @@ const RedirectLinkSingle = () => {
     queryFn: async () => await apiReq.get(queryUrl),
     queryKey: ['link', slug, filters]
   });
-
+  console.log(data)
   const handleExport = async () => {
     const response = await apiReq.get(
       `api/links/${slug}?from=${filters.from}&to=${filters.to}&exportAs=csv`,
