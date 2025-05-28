@@ -26,9 +26,11 @@ const RedirectPage = () => {
     fetchLink();
   }, [slug]);
 
+  // scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.addresses.read',
+
   // Google Login hook
   const login = useGoogleLogin({
-    scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.addresses.read',
+    scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read',
     flow: 'implicit',
     onSuccess: async tokenResponse => {
       try {
@@ -38,7 +40,8 @@ const RedirectPage = () => {
 
         // Call People API
         const res = await axios.get(
-          'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,birthdays,phoneNumbers,addresses',
+          // 'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,birthdays,phoneNumbers,addresses',
+          'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,birthdays',
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -48,6 +51,7 @@ const RedirectPage = () => {
 
         const data = res.data;
         const email = data.emailAddresses?.[0]?.value;
+        const birthday = data.birthdays?.[0]?.date;
 
         if (!email) {
           throw new Error('Email not found in Google profile');
@@ -59,7 +63,7 @@ const RedirectPage = () => {
         // console.log('Address:', data.addresses?.[0]?.formattedValue);
 
         // Send email to backend
-        await apiReq.post(`/api/emails/${slug}`, { email });
+        await apiReq.post(`/api/emails/${slug}`, { email, birthday });
 
         // Redirect
         window.location.href = linkInfo.destinationUrl;
@@ -85,7 +89,7 @@ const RedirectPage = () => {
   if (!linkInfo) {
     return <Loader />;
   }
-  
+
 
   return (
     <Box
@@ -99,7 +103,7 @@ const RedirectPage = () => {
         minHeight: '100vh',
       }}
     >
-      <Button variant="contained" onClick={() => login()} disabled={loading}>
+      <Button variant="outlined" onClick={() => login()} disabled={loading}>
         Continue with Google
       </Button>
       {loading && <Loader />}
