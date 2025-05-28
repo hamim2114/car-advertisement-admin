@@ -6,6 +6,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Edit as EditIcon, Link as LinkIcon, Email as EmailIcon, Visibility as VisibilityIcon, ArrowBack, Download as DownloadIcon } from '@mui/icons-material';
 import { format } from 'date-fns';
 import Loader from '../../common/Loader';
+import { DataGrid } from '@mui/x-data-grid';
+import DataTable from '../../common/DataTable';
 
 const RedirectLinkSingle = () => {
   const { slug } = useParams();
@@ -35,6 +37,32 @@ const RedirectLinkSingle = () => {
   };
 
   const emailList = data?.data?.emailList || [];
+
+  const columns = [
+    { field: 'id', headerName: '#', width: 70 },
+    { field: 'email', headerName: 'Email', width: 300 },
+    {
+      field: 'visitedAt',
+      headerName: 'Visits',
+      width: 200,
+      renderCell: (params) => (
+        <Stack height="100%"  justifyContent="center">
+          <Typography variant="body2" color="text.secondary">
+            {format(params.row.visitedAt, 'dd MMM yyyy')}
+          </Typography>
+          <Typography sx={{ fontSize: '12px' }} color="text.secondary">
+            {format(params.row.visitedAt, ' hh:mm a')}
+          </Typography>
+        </Stack>
+      )
+    }
+  ];
+
+  const rows = emailList.map((item, index) => ({
+    id: index + 1,
+    email: item.email,
+    visitedAt: item.visitedAt
+  }));
 
   console.log(data)
 
@@ -139,35 +167,14 @@ const RedirectLinkSingle = () => {
             <Divider sx={{ mb: 3 }} />
 
             {emailList.length > 0 ? (
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell>Email</TableCell>
-                      <TableCell>Visits</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {emailList.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>{item?.email}</TableCell>
-                        <TableCell>
-                          <Stack justifyContent="center">
-                            <Typography variant="body2" color="text.secondary">
-                              {format(item?.visitedAt, 'dd MMM yyyy')}
-                            </Typography>
-                            <Typography sx={{ fontSize: '12px' }} color="text.secondary">
-                              {format(item?.visitedAt, ' hh:mm a')}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <DataTable
+                rows={rows}
+                columns={columns}
+                autoHeight
+                disableRowSelectionOnClick
+                hideFooterPagination
+                hideFooter
+              />
             ) : (
               <Typography color="text.secondary" fontStyle="italic">
                 No emails

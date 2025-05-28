@@ -3,6 +3,7 @@ import { Box, Card, CardContent, Typography, Stack } from '@mui/material';
 import apiReq from '../../../utils/axiosReq';
 import Loader from '../../common/Loader';
 import TopPerformLinks from './TopPerformLinks';
+import RecentEmail from './RecentEmail';
 
 const Dashboard = () => {
   const { data, isLoading, isError } = useQuery({
@@ -77,7 +78,7 @@ const Dashboard = () => {
       </Stack>
 
       <TopPerformLinks data={data?.data?.topLinks} />
-      {/* <RecentEmail data={data?.data?.recentEmails} /> */}
+      <RecentEmail data={data?.data?.recentEmails} />
     </Box>
   );
 };
