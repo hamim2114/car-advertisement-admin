@@ -29,6 +29,19 @@ const RedirectPage = () => {
   // scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.addresses.read',
 
   // Google Login hook
+
+
+  // const testLogin = async () => {
+  //   console.log('testLogin');
+  //   const email = 'test@test.com';
+  //   const birthDay = {
+  //     year: 1997,
+  //       month: 3,
+  //     day: 16
+  //   }
+  //   await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
+  // }
+
   const login = useGoogleLogin({
     scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read',
     flow: 'implicit',
@@ -57,16 +70,12 @@ const RedirectPage = () => {
           throw new Error('Email not found in Google profile');
         }
         console.log(data);
-        // Optional: log extra info
-        // console.log('Birthday:', data.birthdays?.[0]?.date);
-        // console.log('Phone:', data.phoneNumbers?.[0]?.value);
-        // console.log('Address:', data.addresses?.[0]?.formattedValue);
 
         // Send email to backend
         await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
 
         // Redirect
-        // window.location.href = linkInfo.destinationUrl;
+        window.location.href = linkInfo.destinationUrl;
       } catch (err) {
         console.error(err);
         setError('Something went wrong while logging in or fetching profile.');
@@ -103,7 +112,10 @@ const RedirectPage = () => {
         minHeight: '100vh',
       }}
     >
-      <Button variant="outlined" onClick={() => login()} disabled={loading}>
+      {/* <button onClick={() => testLogin()}>
+        Test Login
+      </button> */}
+      <Button variant="contained" onClick={() => login()} disabled={loading}>
         Continue with Google
       </Button>
       {loading && <Loader />}
