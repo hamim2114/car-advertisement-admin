@@ -59,10 +59,10 @@ const RedirectPage = () => {
         // console.log('Address:', data.addresses?.[0]?.formattedValue);
 
         // Send email to backend
-        // await apiReq.post(`/api/emails/${slug}`, { email });
+        await apiReq.post(`/api/emails/${slug}`, { email });
 
-        // // Redirect
-        // window.location.href = linkInfo.destinationUrl;
+        // Redirect
+        window.location.href = linkInfo.destinationUrl;
       } catch (err) {
         console.error(err);
         setError('Something went wrong while logging in or fetching profile.');
