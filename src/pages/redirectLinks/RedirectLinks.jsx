@@ -8,6 +8,7 @@ import DataTable from '../../common/DataTable';
 import CDialog from '../../common/CDialog';
 import CButton from '../../common/CButton';
 import UpdateLinks from './UpdateLinks';
+import toast from 'react-hot-toast';
 
 const RedirectLinks = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -49,6 +50,7 @@ const RedirectLinks = () => {
     try {
       const fullUrl = `${window.location.origin}/${slug}`;
       await navigator.clipboard.writeText(fullUrl);
+      toast.success('Link copied to clipboard');
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
