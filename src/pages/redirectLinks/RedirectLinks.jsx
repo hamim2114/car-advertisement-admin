@@ -1,8 +1,8 @@
-import { Box, DialogActions,  IconButton, Stack, Typography } from '@mui/material'
+import { Box, DialogActions, IconButton, Stack, Typography } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import apiReq from '../../../utils/axiosReq';
-import { DeleteOutlined, EditOutlined, EmailOutlined, VisibilityOutlined } from '@mui/icons-material';
+import { ContentCopy, DeleteOutlined, EditOutlined, EmailOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import DataTable from '../../common/DataTable';
 import CDialog from '../../common/CDialog';
@@ -45,6 +45,14 @@ const RedirectLinks = () => {
     setDeleteDialogOpen(false);
   }
 
+  const handleCopyToClipboard = async (slug) => {
+    try {
+      const fullUrl = `${window.location.origin}/${slug}`;
+      await navigator.clipboard.writeText(fullUrl);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
 
   const columns = [
 
@@ -53,7 +61,10 @@ const RedirectLinks = () => {
       headerName: 'Slug',
       width: 200,
       renderCell: (params) => (
-        <Stack justifyContent="center" height='100%'>
+        <Stack gap={1} direction='row' alignItems='center' height='100%'>
+          <IconButton onClick={() => handleCopyToClipboard(params.row.slug)}>
+            <ContentCopy fontSize='small' />
+          </IconButton>
           <Link to={`${params.row.slug}`} style={{ textDecoration: 'none' }}>
             <Typography>{params.row.slug}</Typography>
           </Link>
@@ -153,10 +164,10 @@ const RedirectLinks = () => {
       p: 3, borderRadius: '16px',
       minHeight: '100vh'
     }} maxWidth='lg'>
-        <Typography variant="h5" gutterBottom>
-          Redirect Links
-        </Typography>
-    
+      <Typography variant="h5" gutterBottom>
+        Redirect Links
+      </Typography>
+
 
       <Box mt={4}>
         <DataTable

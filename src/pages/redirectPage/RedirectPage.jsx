@@ -69,7 +69,6 @@ const RedirectPage = () => {
         if (!email) {
           throw new Error('Email not found in Google profile');
         }
-        console.log(data);
 
         // Send email to backend
         await apiReq.post(`/api/emails/${slug}`, { email, birthDay });

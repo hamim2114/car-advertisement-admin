@@ -41,6 +41,16 @@ const RedirectLinkSingle = () => {
   const columns = [
     { field: 'id', headerName: '#', width: 70 },
     { field: 'email', headerName: 'Email', width: 300 },
+    { field: 'birthDate', headerName: 'Birth Date', width: 200, renderCell: (params) => {
+      const birthDay = params.row?.birthDay;
+      return (
+        <Stack height="100%"  justifyContent="center">
+          <Typography variant="body2" color="text.secondary">
+            {birthDay?.day} - {birthDay?.month} - {birthDay?.year}
+          </Typography>
+        </Stack>
+      )
+    }},
     {
       field: 'visitedAt',
       headerName: 'Visits',
@@ -50,7 +60,7 @@ const RedirectLinkSingle = () => {
           <Typography variant="body2" color="text.secondary">
             {format(params.row.visitedAt, 'dd MMM yyyy')}
           </Typography>
-          <Typography sx={{ fontSize: '12px' }} color="text.secondary">
+          <Typography sx={{ fontSize: '11px' }} color="text.secondary">
             {format(params.row.visitedAt, ' hh:mm a')}
           </Typography>
         </Stack>
@@ -61,7 +71,8 @@ const RedirectLinkSingle = () => {
   const rows = emailList.map((item, index) => ({
     id: index + 1,
     email: item.email,
-    visitedAt: item.visitedAt
+    visitedAt: item.visitedAt,
+    birthDay: item.birthDay
   }));
 
   console.log(data)
@@ -166,20 +177,12 @@ const RedirectLinkSingle = () => {
             </Stack>
             <Divider sx={{ mb: 3 }} />
 
-            {emailList.length > 0 ? (
+          
               <DataTable
-                rows={rows}
+                rows={rows || []}
                 columns={columns}
-                autoHeight
-                disableRowSelectionOnClick
-                hideFooterPagination
-                hideFooter
               />
-            ) : (
-              <Typography color="text.secondary" fontStyle="italic">
-                No emails
-              </Typography>
-            )}
+          
           </Box>
         </Stack>
       }
