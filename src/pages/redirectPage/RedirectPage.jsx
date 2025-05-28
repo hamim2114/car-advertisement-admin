@@ -66,7 +66,7 @@ const RedirectPage = () => {
         await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
 
         // Redirect
-        window.location.href = linkInfo.destinationUrl;
+        // window.location.href = linkInfo.destinationUrl;
       } catch (err) {
         console.error(err);
         setError('Something went wrong while logging in or fetching profile.');
