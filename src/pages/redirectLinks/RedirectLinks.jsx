@@ -9,6 +9,7 @@ import CDialog from '../../common/CDialog';
 import CButton from '../../common/CButton';
 import UpdateLinks from './UpdateLinks';
 import toast from 'react-hot-toast';
+import { copyToClipboard } from '../../../utils/copyToClipboard';
 
 const RedirectLinks = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -46,16 +47,6 @@ const RedirectLinks = () => {
     setDeleteDialogOpen(false);
   }
 
-  const handleCopyToClipboard = async (slug) => {
-    try {
-      const fullUrl = `${window.location.origin}/${slug}`;
-      await navigator.clipboard.writeText(fullUrl);
-      toast.success('Link copied to clipboard');
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-    }
-  };
-
   const columns = [
 
     {
@@ -64,7 +55,7 @@ const RedirectLinks = () => {
       width: 200,
       renderCell: (params) => (
         <Stack gap={1} direction='row' alignItems='center' height='100%'>
-          <IconButton onClick={() => handleCopyToClipboard(params.row.slug)}>
+          <IconButton onClick={() => copyToClipboard(params.row.slug)}>
             <ContentCopy fontSize='small' />
           </IconButton>
           <Link to={`${params.row.slug}`} style={{ textDecoration: 'none' }}>
@@ -105,7 +96,7 @@ const RedirectLinks = () => {
     {
       field: 'destinationUrl',
       headerName: 'Destination URL',
-      width: 200,
+      width: 300,
       renderCell: (params) => (
         <Stack justifyContent="center" height='100%'>
           <a href={params.row.destinationUrl} target='_blank' rel='noreferrer'>{params.row.destinationUrl}</a>
@@ -172,14 +163,15 @@ const RedirectLinks = () => {
 
 
       <Box mt={4}>
-        <DataTable
-          rows={data?.data || []}
-          getRowId={(row) => row._id}
-          columns={columns}
-          loading={isLoading}
-          rowHeight={70}
-          noRowsLabel='No lInks Available'
-        />
+      <DataTable
+  rows={data?.data || []}
+  getRowId={(row) => row._id}
+  columns={columns}
+  loading={isLoading}
+  rowHeight={70}
+  noRowsLabel="No Links Available"
+/>
+
       </Box>
 
       {/* delete dialog */}

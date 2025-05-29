@@ -1,24 +1,7 @@
 /* eslint-disable react/prop-types */
-import { Box, Pagination, PaginationItem, useTheme } from '@mui/material';
-import { DataGrid, useGridApiContext, useGridSelector, gridPageSelector, gridPageCountSelector } from '@mui/x-data-grid';
-
-function CustomPagination() {
-  const apiRef = useGridApiContext();
-  const page = useGridSelector(apiRef, gridPageSelector);
-  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
-  return (
-    <Pagination
-      color="primary"
-      variant="contained"
-      // shape="rounded"
-      page={page + 1}
-      count={pageCount}
-      renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
-      onChange={(event, value) => apiRef.current.setPage(value - 1)}
-    />
-  );
-}
+import { Box } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import { useState } from 'react';
 
 const DataTable = ({
   rows,
@@ -28,20 +11,21 @@ const DataTable = ({
   checkboxSelection = false,
   onRowSelectionModelChange,
   columnVisibilityModel,
-  pageSize = 10,
   getRowId,
-  pageSizeOptions = [10, 25, 50],
+  pageSizeOptions = [10, 25, 50, 100],
   noRowsLabel = 'No data available',
   sx,
-  loading
+  loading,
 }) => {
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: pageSizeOptions[0],
+    page: 0,
+  });
 
   return (
-    <Box
-    // sx={{ width: { xs: '96vw', md: '100%' } }}
-    >
+    <Box>
       <DataGrid
-        sx={{ bgcolor: '#fff' }}
+        sx={{ bgcolor: '#fff', ...sx }}
         rows={rows}
         columns={columns}
         autoHeight
@@ -49,29 +33,21 @@ const DataTable = ({
         getRowId={getRowId}
         rowHeight={rowHeight}
         getRowHeight={getRowHeight}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize,
-            },
-          },
-        }}
+        checkboxSelection={checkboxSelection}
+        onRowSelectionModelChange={onRowSelectionModelChange}
+        columnVisibilityModel={columnVisibilityModel}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        pageSizeOptions={pageSizeOptions}
         localeText={{
           noRowsLabel,
           footerRowSelected: (count) =>
             `${count.toLocaleString()} Selected`,
         }}
-        checkboxSelection={checkboxSelection}
-        onRowSelectionModelChange={onRowSelectionModelChange}
-        columnVisibilityModel={columnVisibilityModel}
-        pageSizeOptions={pageSizeOptions}
         disableRowSelectionOnClick
         disableColumnFilter
         disableColumnSorting
         disableColumnMenu
-        slots={{
-          pagination: CustomPagination,
-        }}
       />
     </Box>
   );

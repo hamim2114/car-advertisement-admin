@@ -3,11 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import apiReq from '../../../utils/axiosReq';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Edit as EditIcon, Link as LinkIcon, Email as EmailIcon, Visibility as VisibilityIcon, ArrowBack, Download as DownloadIcon } from '@mui/icons-material';
+import { Edit as EditIcon, Link as LinkIcon, Email as EmailIcon, Visibility as VisibilityIcon, ArrowBack, Download as DownloadIcon, ContentCopy } from '@mui/icons-material';
 import { format } from 'date-fns';
 import Loader from '../../common/Loader';
 import { DataGrid } from '@mui/x-data-grid';
 import DataTable from '../../common/DataTable';
+import toast from 'react-hot-toast';
+import { copyToClipboard } from '../../../utils/copyToClipboard';
 
 const RedirectLinkSingle = () => {
   const { slug } = useParams();
@@ -16,11 +18,11 @@ const RedirectLinkSingle = () => {
 
   const queryUrl = `api/links/${slug}?from=${filters.from}&to=${filters.to}`;
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryFn: async () => await apiReq.get(queryUrl),
     queryKey: ['link', slug, filters]
   });
-  console.log(data)
+
   const handleExport = async () => {
     const response = await apiReq.get(
       `api/links/${slug}?from=${filters.from}&to=${filters.to}&exportAs=csv`,
@@ -36,27 +38,30 @@ const RedirectLinkSingle = () => {
     link.remove();
   };
 
+
   const emailList = data?.data?.emailList || [];
 
   const columns = [
     { field: 'id', headerName: '#', width: 70 },
     { field: 'email', headerName: 'Email', width: 300 },
-    { field: 'birthDate', headerName: 'Birth Date', width: 200, renderCell: (params) => {
-      const birthDay = params.row?.birthDay;
-      return (
-        <Stack height="100%"  justifyContent="center">
-          <Typography variant="body2" color="text.secondary">
-            {birthDay?.day} - {birthDay?.month} - {birthDay?.year}
-          </Typography>
-        </Stack>
-      )
-    }},
+    {
+      field: 'birthDate', headerName: 'Birth Date', width: 200, renderCell: (params) => {
+        const birthDay = params.row?.birthDay;
+        return (
+          <Stack height="100%" justifyContent="center">
+            <Typography variant="body2" color="text.secondary">
+              {birthDay?.day} - {birthDay?.month} - {birthDay?.year}
+            </Typography>
+          </Stack>
+        )
+      }
+    },
     {
       field: 'visitedAt',
       headerName: 'Visits',
       width: 200,
       renderCell: (params) => (
-        <Stack height="100%"  justifyContent="center">
+        <Stack height="100%" justifyContent="center">
           <Typography variant="body2" color="text.secondary">
             {format(params.row.visitedAt, 'dd MMM yyyy')}
           </Typography>
@@ -98,6 +103,9 @@ const RedirectLinkSingle = () => {
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <Typography color="text.secondary" mb={1}>Slug</Typography>
                   <Chip label={data?.data?.slug} sx={{ fontSize: '1rem', py: 2 }} />
+                  <IconButton onClick={() => copyToClipboard(data?.data?.slug)}>
+                    <ContentCopy fontSize='small' />
+                  </IconButton>
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <Typography color="text.secondary" mb={1}>Created At : </Typography>
@@ -177,12 +185,12 @@ const RedirectLinkSingle = () => {
             </Stack>
             <Divider sx={{ mb: 3 }} />
 
-          
-              <DataTable
-                rows={rows || []}
-                columns={columns}
-              />
-          
+
+            <DataTable
+              rows={rows || []}
+              columns={columns}
+            />
+
           </Box>
         </Stack>
       }

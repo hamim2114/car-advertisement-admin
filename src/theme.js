@@ -36,10 +36,10 @@ export const theme = createTheme({
   },
 
   typography: {
-    fontFamily: [
-      'Roboto',
-      'Noto Serif Bengali',
-    ].join(','),
+    // fontFamily: [
+    //   'Roboto',
+    //   'Noto Serif Bengali',
+    // ].join(','),
     h4: {
       fontSize: '30px',
       fontWeight: 600,

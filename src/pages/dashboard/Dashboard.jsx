@@ -49,20 +49,6 @@ const Dashboard = () => {
         <Card sx={{ flex: 1, height: '100%', bgcolor: '#f5f5f5' }}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom variant="subtitle1">
-              Total Link Visits
-            </Typography>
-            <Typography variant="h3" sx={{
-              fontWeight: 'bold',
-              color: 'success.main',
-              fontSize: { xs: '2rem', sm: '2.5rem' }
-            }}>
-              {data?.data?.totalVisits || 0}
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card sx={{ flex: 1, height: '100%', bgcolor: '#f5f5f5' }}>
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom variant="subtitle1">
               Total Emails Collected
             </Typography>
             <Typography variant="h3" sx={{
@@ -74,6 +60,21 @@ const Dashboard = () => {
             </Typography>
           </CardContent>
         </Card>
+        <Card sx={{ flex: 1, height: '100%', bgcolor: '#f5f5f5' }}>
+          <CardContent>
+            <Typography color="textSecondary" gutterBottom variant="subtitle1">
+              Total Link Visits
+            </Typography>
+            <Typography variant="h3" sx={{
+              fontWeight: 'bold',
+              color: 'success.main',
+              fontSize: { xs: '2rem', sm: '2.5rem' }
+            }}>
+              {data?.data?.totalVisits || 0}
+            </Typography>
+          </CardContent>
+        </Card>
+        
 
       </Stack>
 
