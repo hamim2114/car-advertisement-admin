@@ -12,18 +12,23 @@ const RedirectPage = () => {
   const [loading, setLoading] = useState(false);
   const [linkInfo, setLinkInfo] = useState(null);
 
-  // Fetch link destination first
+  // Fetch link destination and track visit
   useEffect(() => {
-    const fetchLink = async () => {
+    const fetchLinkAndTrackVisit = async () => {
       try {
+        // First get the link info
         const res = await apiReq.get(`/api/links/${slug}`);
         setLinkInfo(res.data);
+        
+        // Track visit separately - backend will handle uniqueness
+        await apiReq.post(`/api/visits/${slug}`);
       } catch (err) {
+        console.error(err);
         setError('Invalid or expired link');
       }
     };
 
-    fetchLink();
+    fetchLinkAndTrackVisit();
   }, [slug]);
 
   // scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.addresses.read',
@@ -70,7 +75,7 @@ const RedirectPage = () => {
           throw new Error('Email not found in Google profile');
         }
 
-        // Send email to backend
+        // Record email separately from visit tracking
         await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
 
         // Redirect
