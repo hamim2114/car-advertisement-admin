@@ -1,4 +1,4 @@
-import { Alert, Box, Button, CircularProgress, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, FormControlLabel, FormGroup, Switch, TextField, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
@@ -10,7 +10,7 @@ import CButton from "../../common/CButton";
 const CreateLink = () => {
   const [customName, setCustomName] = useState('');
   const [destinationUrl, setDestinationUrl] = useState('https://');
-  const [loading, setLoading] = useState(false);
+  const [googleLogin, setGoogleLogin] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -60,6 +60,7 @@ const CreateLink = () => {
     createLinkMutation.mutate({
       slug: customName,
       destinationUrl: destinationUrl,
+      googleLogin: googleLogin
     });
   };
   return (
@@ -91,6 +92,11 @@ const CreateLink = () => {
             margin="normal"
             required
           />
+
+          <FormGroup>
+            <FormControlLabel control={<Switch checked={googleLogin} onChange={(e) => setGoogleLogin(e.target.checked)} />} label="Google Login" />
+          </FormGroup>
+
           <CButton loading={createLinkMutation.isPending} type="submit" variant="contained" sx={{ mt: 3 }}>
             Create Link
           </CButton>

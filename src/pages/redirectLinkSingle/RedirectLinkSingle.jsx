@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import apiReq from '../../../utils/axiosReq';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Edit as EditIcon, Link as LinkIcon, Email as EmailIcon, Visibility as VisibilityIcon, ArrowBack, Download as DownloadIcon, ContentCopy } from '@mui/icons-material';
+import { Edit as EditIcon, Link as LinkIcon, Email as EmailIcon, Visibility as VisibilityIcon, ArrowBack, Download as DownloadIcon, ContentCopy, Google } from '@mui/icons-material';
 import { format } from 'date-fns';
 import Loader from '../../common/Loader';
 import { DataGrid } from '@mui/x-data-grid';
@@ -101,16 +101,24 @@ const RedirectLinkSingle = () => {
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={3}>
               <Stack spacing={2}>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  <Typography color="text.secondary" mb={1}>Slug</Typography>
+                  <Typography fontWeight="600" color="text.secondary" mb={1}>Slug</Typography>
                   <Chip label={data?.data?.slug} sx={{ fontSize: '1rem', py: 2 }} />
                   <IconButton onClick={() => copyToClipboard(data?.data?.slug)}>
                     <ContentCopy fontSize='small' />
                   </IconButton>
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  <Typography color="text.secondary" mb={1}>Created At : </Typography>
+                  <Typography fontWeight="600" color="text.secondary" mb={1}>Created At : </Typography>
                   <Typography variant="subtitle2" color="text.secondary" mb={1}>{format(data?.data?.createdAt, 'dd MMM yyyy')}</Typography>
                 </Stack>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <Typography fontWeight="600" color="text.secondary" mb={1}>Google Login : </Typography>  
+                  {data?.data?.googleLogin ?
+                   <Typography sx={{display: 'flex', alignItems: 'center', gap: .5, bgcolor: 'green', fontSize: '14px', width: 'fit-content', color: 'white', borderRadius: '50px', px: 1, py: 0.2}}> <Google sx={{fontSize: '14px'}} /> Active</Typography> :
+                   <Typography sx={{display: 'flex', alignItems: 'center', gap: .5, bgcolor: 'darkgray', fontSize: '14px', width: 'fit-content', color: 'white', borderRadius: '50px', px: 1, py: 0.2 }}> <Google sx={{fontSize: '14px'}} /> Inactive</Typography>
+                } 
+                </Stack>
+
               </Stack>
 
               <Box>

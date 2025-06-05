@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Alert, Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, FormControlLabel, FormGroup, Switch, TextField, Typography } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -12,6 +12,7 @@ const UpdateLinks = ({ linkData, closeDialog }) => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
+  const [googleLogin, setGoogleLogin] = useState(linkData?.googleLogin || false);
 
   const queryClient = useQueryClient();
   console.log(linkData);
@@ -38,10 +39,11 @@ const UpdateLinks = ({ linkData, closeDialog }) => {
     }
     setSuccessMessage('');
     setError('');
-    
+
     updateLinkMutation.mutate({
       slug: customName,
       destinationUrl: destinationUrl,
+      googleLogin: googleLogin
     });
   };
 
@@ -66,6 +68,9 @@ const UpdateLinks = ({ linkData, closeDialog }) => {
           margin="normal"
           required
         />
+        <FormGroup>
+          <FormControlLabel control={<Switch checked={googleLogin} onChange={(e) => setGoogleLogin(e.target.checked)} />} label="Google Login" />
+        </FormGroup>
         {loading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
             <CircularProgress />

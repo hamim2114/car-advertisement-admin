@@ -12,18 +12,34 @@ const RedirectPage = () => {
   const [loading, setLoading] = useState(false);
   const [linkInfo, setLinkInfo] = useState(null);
 
-  // Fetch link destination first
+  // Fetch link destination and track visit
   useEffect(() => {
-    const fetchLink = async () => {
+    let mounted = true;
+    
+    const fetchLinkAndTrackVisit = async () => {
       try {
+        // First get the link info
         const res = await apiReq.get(`/api/links/${slug}`);
+        if (!mounted) return;
         setLinkInfo(res.data);
+        
+        // Only record visit if component is still mounted
+        const visitRes = await apiReq.post(`/api/visits/${slug}`);
+        if (!mounted || visitRes.data.recorded) return;
+        
       } catch (err) {
+        if (!mounted) return;
+        console.error(err);
         setError('Invalid or expired link');
       }
     };
-
-    fetchLink();
+  
+    fetchLinkAndTrackVisit();
+  
+    // Cleanup function
+    return () => {
+      mounted = false;
+    };
   }, [slug]);
 
   // scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.addresses.read',
@@ -42,6 +58,7 @@ const RedirectPage = () => {
   //   await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
   // }
 
+  console.log(linkInfo);
   const login = useGoogleLogin({
     scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read',
     flow: 'implicit',
@@ -65,12 +82,11 @@ const RedirectPage = () => {
         const data = res.data;
         const email = data.emailAddresses?.[0]?.value;
         const birthDay = data.birthdays?.[0]?.date;
-
         if (!email) {
           throw new Error('Email not found in Google profile');
         }
 
-        // Send email to backend
+        // Record email separately from visit tracking
         await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
 
         // Redirect

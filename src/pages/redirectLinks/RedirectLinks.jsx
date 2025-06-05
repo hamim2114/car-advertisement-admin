@@ -2,7 +2,7 @@ import { Box, DialogActions, IconButton, Stack, Typography } from '@mui/material
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import apiReq from '../../../utils/axiosReq';
-import { ContentCopy, DeleteOutlined, EditOutlined, EmailOutlined, VisibilityOutlined } from '@mui/icons-material';
+import { CheckCircle, ContentCopy, DeleteOutlined, EditOutlined, EmailOutlined, Google, VisibilityOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import DataTable from '../../common/DataTable';
 import CDialog from '../../common/CDialog';
@@ -65,6 +65,20 @@ const RedirectLinks = () => {
       ),
     },
 
+    {
+      field: 'googleLogin',
+      headerName: 'Google Login',
+      width: 150,
+      renderCell: (params) => (
+        <Stack justifyContent="center" height='100%'>
+          {params.row.googleLogin ?
+            <Typography sx={{display: 'flex', alignItems: 'center', gap: .5, bgcolor: 'green', fontSize: '14px', width: 'fit-content', color: 'white', borderRadius: '50px', px: 1, py: 0.2}}> <Google sx={{fontSize: '14px'}} /> Active</Typography> :
+            <Typography sx={{display: 'flex', alignItems: 'center', gap: .5, bgcolor: 'darkgray', fontSize: '14px', width: 'fit-content', color: 'white', borderRadius: '50px', px: 1, py: 0.2 }}> <Google sx={{fontSize: '14px'}} /> Inactive</Typography>
+          }
+
+        </Stack>
+      ),
+    },
     {
       field: 'totalEmails',
       headerName: 'Total Emails',
@@ -163,14 +177,14 @@ const RedirectLinks = () => {
 
 
       <Box mt={4}>
-      <DataTable
-  rows={data?.data || []}
-  getRowId={(row) => row._id}
-  columns={columns}
-  loading={isLoading}
-  rowHeight={70}
-  noRowsLabel="No Links Available"
-/>
+        <DataTable
+          rows={data?.data || []}
+          getRowId={(row) => row._id}
+          columns={columns}
+          loading={isLoading}
+          rowHeight={70}
+          noRowsLabel="No Links Available"
+        />
 
       </Box>
 

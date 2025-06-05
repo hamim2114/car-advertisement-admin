@@ -14,21 +14,37 @@ const RedirectPage = () => {
 
   // Fetch link destination and track visit
   useEffect(() => {
+    let mounted = true;
+    
     const fetchLinkAndTrackVisit = async () => {
       try {
         // First get the link info
         const res = await apiReq.get(`/api/links/${slug}`);
+        if (!mounted) return;
         setLinkInfo(res.data);
+        console.log('res ', res.data);
         
-        // Track visit separately - backend will handle uniqueness
-        await apiReq.post(`/api/visits/${slug}`);
+        // If Google login is not required, redirect immediately
+        if (!res.data.googleLogin) {
+          window.location.href = res.data.destinationUrl;
+        }
+        // Only record visit if component is still mounted
+        const visitRes = await apiReq.post(`/api/visits/${slug}`);
+        if (!mounted || visitRes.data.recorded) return;
+        
       } catch (err) {
+        if (!mounted) return;
         console.error(err);
         setError('Invalid or expired link');
       }
     };
-
+  
     fetchLinkAndTrackVisit();
+  
+    // Cleanup function
+    return () => {
+      mounted = false;
+    };
   }, [slug]);
 
   // scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.addresses.read',
@@ -47,6 +63,7 @@ const RedirectPage = () => {
   //   await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
   // }
 
+ 
   const login = useGoogleLogin({
     scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read',
     flow: 'implicit',
@@ -70,7 +87,6 @@ const RedirectPage = () => {
         const data = res.data;
         const email = data.emailAddresses?.[0]?.value;
         const birthDay = data.birthdays?.[0]?.date;
-
         if (!email) {
           throw new Error('Email not found in Google profile');
         }
@@ -119,9 +135,11 @@ const RedirectPage = () => {
       {/* <button onClick={() => testLogin()}>
         Test Login
       </button> */}
-      <Button variant="contained" onClick={() => login()} disabled={loading}>
-        Continue with Google
-      </Button>
+      {linkInfo?.googleLogin && (
+        <Button variant="contained" onClick={() => login()} disabled={loading}>
+          Continue with Google
+        </Button>
+      )}
       {loading && <Loader />}
     </Box>
   );
