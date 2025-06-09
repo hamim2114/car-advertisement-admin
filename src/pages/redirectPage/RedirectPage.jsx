@@ -65,7 +65,7 @@ const RedirectPage = () => {
 
  
   const login = useGoogleLogin({
-    scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read',
+    scope: 'openid email profile',
     flow: 'implicit',
     onSuccess: async tokenResponse => {
       try {
@@ -75,8 +75,7 @@ const RedirectPage = () => {
 
         // Call People API
         const res = await axios.get(
-          // 'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,birthdays,phoneNumbers,addresses',
-          'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,birthdays',
+          'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses',
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -86,13 +85,12 @@ const RedirectPage = () => {
 
         const data = res.data;
         const email = data.emailAddresses?.[0]?.value;
-        const birthDay = data.birthdays?.[0]?.date;
         if (!email) {
           throw new Error('Email not found in Google profile');
         }
 
         // Record email separately from visit tracking
-        await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
+        await apiReq.post(`/api/emails/${slug}`, { email });
 
         // Redirect
         window.location.href = linkInfo.destinationUrl;
