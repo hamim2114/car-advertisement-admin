@@ -168,7 +168,7 @@ const RedirectLinks = () => {
   return (
     <Box sx={{
       bgcolor: '#fff',
-      p: 3, borderRadius: '16px',
+      p: {xs:2,md:3}, borderRadius: '16px',
       minHeight: '100vh'
     }} maxWidth='lg'>
       <Typography variant="h5" gutterBottom>
@@ -176,7 +176,7 @@ const RedirectLinks = () => {
       </Typography>
 
 
-      <Box mt={4}>
+      <Box  mt={4}>
         <DataTable
           rows={data?.data || []}
           getRowId={(row) => row._id}

@@ -28,9 +28,7 @@ function App() {
   const { token } = useAuth()
 
   return (
-    <Box
-      sx={{ overflowX: 'hidden' }}
-    >
+    <Box>
       <ScrollToTop />
       <Routes>
         <Route path='/:slug' element={<RedirectPage />} />

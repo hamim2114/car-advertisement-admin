@@ -83,7 +83,7 @@ const RedirectLinkSingle = () => {
   console.log(data)
 
   return (
-    <Box sx={{ bgcolor: '#fff', p: 4, borderRadius: '24px', minHeight: '100vh', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }} maxWidth='lg'>
+    <Box sx={{ bgcolor: '#fff', p: {xs:2,md:4}, borderRadius: '24px', minHeight: '100vh', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }} maxWidth='lg'>
 
       {isLoading ? <Loader /> :
 
@@ -98,7 +98,7 @@ const RedirectLinkSingle = () => {
             </Stack>
             <Divider sx={{ mb: 3 }} />
 
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={3}>
+            <Stack direction={{xs:'column',md:'row'}} alignItems={{xs:'flex-start',md:'center'}} justifyContent="space-between" spacing={3}>
               <Stack spacing={2}>
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <Typography fontWeight="600" color="text.secondary" mb={1}>Slug</Typography>
@@ -142,7 +142,7 @@ const RedirectLinkSingle = () => {
             </Stack>
             <Divider sx={{ mb: 3 }} />
 
-            <Stack direction="row" spacing={4}>
+            <Stack direction={{xs:'column',md:'row'}} gap={2}>
               <Stack direction="row" alignItems="center" justifyContent="space-between" flex={1} sx={{ py: 2, px: 4, bgcolor: '#e3f2fd', borderRadius: 2 }}>
                 <Typography variant="h5" color="text.secondary">Total Visits</Typography>
                 <Typography variant="h4" fontWeight="bold" color="#1976d2">
@@ -192,6 +192,7 @@ const RedirectLinkSingle = () => {
 
             </Stack>
             <Divider sx={{ mb: 3 }} />
+
 
 
             <DataTable

@@ -23,7 +23,8 @@ const DataTable = ({
   });
 
   return (
-    <Box>
+    <Box 
+    sx={{ }}>
       <DataGrid
         sx={{ bgcolor: '#fff', ...sx }}
         rows={rows}

@@ -42,7 +42,7 @@ function Layout() {
   };
 
   return (
-    <Box sx={{ display: 'flex', bgcolor: 'bg', minHeight: '100vh' }}>
+    <Box sx={{ display: {xs:'', md:'flex'}, bgcolor: 'bg', minHeight: '100vh' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -161,16 +161,13 @@ function Layout() {
         </Drawer>
       </Box>
       <Box
-        component="main"
         sx={{ flexGrow: 1, p: { xs: 1, md: 3 }, width: { md: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
         <Box mb={2}>
           <BreadCrumb />
         </Box>
-        <Box>
-          <Outlet />
-        </Box>
+        <Outlet />
       </Box>
     </Box>
   );
