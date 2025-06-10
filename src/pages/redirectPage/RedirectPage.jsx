@@ -12,11 +12,25 @@ const RedirectPage = () => {
   const [loading, setLoading] = useState(false);
   const [linkInfo, setLinkInfo] = useState(null);
   const [isInstagramBrowser, setIsInstagramBrowser] = useState(false);
+  const [instagramRedirectInitiated, setInstagramRedirectInitiated] = useState(false);
 
   // Check for Instagram browser on component mount
   useEffect(() => {
     setIsInstagramBrowser(/Instagram/.test(navigator.userAgent));
   }, []);
+
+  // Handle Instagram redirect completion
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const success = params.get('login_success');
+    const error = params.get('login_error');
+
+    if (success === 'true' && linkInfo?.destinationUrl) {
+      window.location.href = linkInfo.destinationUrl;
+    } else if (error) {
+      setError('Google sign-in was cancelled or failed.');
+    }
+  }, [linkInfo]);
 
   // Fetch link destination and track visit
   useEffect(() => {
@@ -54,11 +68,17 @@ const RedirectPage = () => {
 
   const handleGoogleLogin = () => {
     if (isInstagramBrowser) {
+      setLoading(true);
+      setInstagramRedirectInitiated(true);
+      // Use the same base URL as the current page
+      const baseUrl = window.location.origin;
       // Open in new tab for Instagram browser
       window.open(
-        `https://your-server.com/api/auth/google?slug=${slug}`,
+        `${baseUrl}/api/auth/google?slug=${slug}&redirect_uri=${encodeURIComponent(window.location.href)}`,
         '_blank'
       );
+      // Add a message for users to return to the original tab
+      setLoading(false);
     } else {
       // Normal login flow
       login();
@@ -133,9 +153,16 @@ const RedirectPage = () => {
       {linkInfo?.googleLogin && (
         <>
           {isInstagramBrowser && (
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              For best results, please open this link in Chrome or Safari
-            </Typography>
+            <>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                For best results, please open this link in Chrome or Safari
+              </Typography>
+              {instagramRedirectInitiated && (
+                <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
+                  After signing in with Google, please return to this tab to continue
+                </Typography>
+              )}
+            </>
           )}
           <Button 
             variant="contained" 
