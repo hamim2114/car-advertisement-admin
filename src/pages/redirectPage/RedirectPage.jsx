@@ -67,22 +67,23 @@ const RedirectPage = () => {
   }, [slug]);
 
   const handleGoogleLogin = () => {
-    if (isInstagramBrowser) {
-      setLoading(true);
-      setInstagramRedirectInitiated(true);
-      // Use the same base URL as the current page
-      const baseUrl = window.location.origin;
-      // Open in new tab for Instagram browser
-      window.open(
-        `${baseUrl}/api/auth/google?slug=${slug}&redirect_uri=${encodeURIComponent(window.location.href)}`,
-        '_blank'
-      );
-      // Add a message for users to return to the original tab
-      setLoading(false);
-    } else {
-      // Normal login flow
+    // if (isInstagramBrowser) {
+    //   setLoading(true);
+    //   setInstagramRedirectInitiated(true);
+    //   // Use the same base URL as the current page
+    //   const baseUrl = window.location.origin;
+    //   // Open in new tab for Instagram browser
+    //   window.open(
+    //     `${baseUrl}/api/auth/google?slug=${slug}&redirect_uri=${encodeURIComponent(window.location.href)}`,
+    //     '_blank'
+    //   );
+    //   // Add a message for users to return to the original tab
+    //   setLoading(false);
+    // } else {
+    //   // Normal login flow
+    //   login();
+    // }
       login();
-    }
   };
 
   const login = useGoogleLogin({
