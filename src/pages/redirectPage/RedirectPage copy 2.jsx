@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import apiReq from '../../../utils/axiosReq';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Loader from '../../common/Loader';
 
 const RedirectPage = () => {
@@ -11,12 +11,6 @@ const RedirectPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [linkInfo, setLinkInfo] = useState(null);
-  const [isInstagramBrowser, setIsInstagramBrowser] = useState(false);
-
-  // Check for Instagram browser on component mount
-  useEffect(() => {
-    setIsInstagramBrowser(/Instagram/.test(navigator.userAgent));
-  }, []);
 
   // Fetch link destination and track visit
   useEffect(() => {
@@ -28,6 +22,7 @@ const RedirectPage = () => {
         const res = await apiReq.get(`/api/links/${slug}`);
         if (!mounted) return;
         setLinkInfo(res.data);
+        console.log('res ', res.data);
         
         // If Google login is not required, redirect immediately
         if (!res.data.googleLogin) {
@@ -52,19 +47,23 @@ const RedirectPage = () => {
     };
   }, [slug]);
 
-  const handleGoogleLogin = () => {
-    if (isInstagramBrowser) {
-      // Open in new tab for Instagram browser
-      window.open(
-        `https://your-server.com/api/auth/google?slug=${slug}`,
-        '_blank'
-      );
-    } else {
-      // Normal login flow
-      login();
-    }
-  };
+  // scope: 'openid email profile https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.addresses.read',
 
+  // Google Login hook
+
+
+  // const testLogin = async () => {
+  //   console.log('testLogin');
+  //   const email = 'test@test.com';
+  //   const birthDay = {
+  //     year: 1997,
+  //       month: 3,
+  //     day: 16
+  //   }
+  //   await apiReq.post(`/api/emails/${slug}`, { email, birthDay });
+  // }
+
+ 
   const login = useGoogleLogin({
     scope: 'openid email profile',
     flow: 'implicit',
@@ -118,6 +117,7 @@ const RedirectPage = () => {
     return <Loader />;
   }
 
+
   return (
     <Box
       sx={{
@@ -130,21 +130,13 @@ const RedirectPage = () => {
         minHeight: '100vh',
       }}
     >
+      {/* <button onClick={() => testLogin()}>
+        Test Login
+      </button> */}
       {linkInfo?.googleLogin && (
-        <>
-          {isInstagramBrowser && (
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              For best results, please open this link in Chrome or Safari
-            </Typography>
-          )}
-          <Button 
-            variant="contained" 
-            onClick={handleGoogleLogin} 
-            disabled={loading}
-          >
-            Continue with Google
-          </Button>
-        </>
+        <Button variant="contained" onClick={() => login()} disabled={loading}>
+          Continue with Google
+        </Button>
       )}
       {loading && <Loader />}
     </Box>
